@@ -1,0 +1,38 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Archive {
+  id         String   @id @default(uuid())
+  name       String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  items      Item[]
+}
+
+model Item {
+  id                    String   @id @default(uuid())
+  country               String
+  state                 String
+  place                 String
+  lat                   Float?
+  lng                   Float?
+  church_name           String
+  church_administration String
+  confession            String
+  year                  Int
+  record_type           String
+  archive_id            String
+  archive               Archive  @relation(fields: [archive_id], references: [id])
+  fund                  String
+  description           String
+  case                  String
+  created_at            DateTime @default(now())
+  updated_at            DateTime @updatedAt
+}
