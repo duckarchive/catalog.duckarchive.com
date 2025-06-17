@@ -8,9 +8,10 @@
     "start": "next start",
     "lint": "eslint --fix",
     "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate dev"
+    "postinstall": "prisma generate"
   },
   "dependencies": {
+    "@duckarchive/prisma": "github:duckarchive/prisma",
     "@heroui/button": "2.2.20",
     "@heroui/code": "2.2.15",
     "@heroui/input": "2.4.20",
@@ -64,5 +65,8 @@
     "tailwindcss": "3.4.16",
     "tsx": "^4.19.4",
     "typescript": "5.6.3"
+  },
+  "prisma": {
+    "schema": "node_modules/@duckarchive/prisma/prisma/catalog/schema.prisma"
   }
 }
