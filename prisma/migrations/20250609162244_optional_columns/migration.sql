@@ -1,4 +1,0 @@
--- AlterTable
-ALTER TABLE "items" ALTER COLUMN "fund" DROP NOT NULL,
-ALTER COLUMN "description" DROP NOT NULL,
-ALTER COLUMN "case" DROP NOT NULL;
