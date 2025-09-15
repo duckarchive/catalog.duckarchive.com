@@ -10,7 +10,7 @@ const getCountries = async () => {
     orderBy: { country: "asc" },
   });
 
-  return countries.map((i) => i.country);
+  return countries.map((i) => i.country) as string[];
 };
 
 export default getCountries;

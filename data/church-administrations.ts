@@ -10,7 +10,7 @@ const getChurchAdministrations = async () => {
     orderBy: { church_administration: "asc" },
   });
 
-  return churchAdministrations.map((i) => i.church_administration);
+  return churchAdministrations.map((i) => i.church_administration) as string[];
 };
 
 export default getChurchAdministrations;

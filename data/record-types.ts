@@ -7,7 +7,7 @@ const getRecordTypes = async () => {
     orderBy: { record_type: "asc" },
   });
 
-  return recordTypes.map((i) => i.record_type);
+  return recordTypes.map((i) => i.record_type) as string[];
 };
 
 export default getRecordTypes;

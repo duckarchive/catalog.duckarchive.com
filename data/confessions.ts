@@ -10,7 +10,7 @@ const getConfessions = async () => {
     orderBy: { confession: "asc" },
   });
 
-  return confessions.map((i) => i.confession);
+  return confessions.map((i) => i.confession) as string[];
 };
 
 export default getConfessions;

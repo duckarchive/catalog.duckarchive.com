@@ -10,7 +10,7 @@ const getStates = async () => {
     orderBy: { state: "asc" },
   });
 
-  return states.map((i) => i.state);
+  return states.map((i) => i.state) as string[];
 };
 
 export default getStates;
