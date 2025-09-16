@@ -1,15 +1,18 @@
 "use client";
 
-import { Key, useEffect, useState } from "react";
+import { useState, useEffect, Key } from "react";
+import useSWR from "swr";
 import {
   Autocomplete,
   AutocompleteItem,
   AutocompleteProps,
 } from "@heroui/autocomplete";
 
-import { Item } from "@/generated/prisma/client";
+// import { Item } from "@/generated/prisma/client";
 
-type PlaceValues = Partial<Pick<Item, "country" | "state" | "place">>;
+// type PlaceValues = Partial<Pick<Item, "country" | "state" | "place">>;
+
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 interface SearchPlaceProps {
   countries: string[];
@@ -19,38 +22,44 @@ interface SearchPlaceProps {
 const SearchPlace: React.FC<SearchPlaceProps> = ({ countries, states }) => {
   const [country, setCountry] = useState<AutocompleteProps["selectedKey"]>();
   const [state, setState] = useState<AutocompleteProps["selectedKey"]>();
-  const [place, setPlace] = useState("");
-  const [placeOptions, setPlaceOptions] = useState<string[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [place, setPlace] = useState<AutocompleteProps["selectedKey"]>();
+  const [placeQuery, setPlaceQuery] = useState("");
+  const [debouncedPlaceQuery, setDebouncedPlaceQuery] = useState("");
 
+  // Debounce the place query to avoid bombarding the API
   useEffect(() => {
-    console.log({
-      country: country?.toString(),
-      state: state?.toString(),
-      place,
-    });
-  }, [country, state, place]);
+    const timer = setTimeout(() => {
+      setDebouncedPlaceQuery(placeQuery);
+    }, 300);
 
-  // Async fetch for place autocomplete
-  useEffect(() => {
-    if (!place) {
-      setPlaceOptions([]);
-      return;
+    return () => clearTimeout(timer);
+  }, [placeQuery]);
+
+  // Use SWR for place autocomplete with debounced query
+  const { data: places = [], isLoading } = useSWR<string[]>(
+    debouncedPlaceQuery && debouncedPlaceQuery !== place
+      ? `/api/places?q=${encodeURIComponent(debouncedPlaceQuery)}`
+      : null,
+    fetcher
+  );
+
+  const handlePlaceInputChange = (value: string) => {
+    if (value === "") {
+      setPlace(null);
     }
-    setLoading(true);
-    fetch(`/api/places?q=${encodeURIComponent(place)}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setPlaceOptions(data);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  }, [place]);
+    setPlaceQuery(value);
+  };
+
+  const handlePlaceChange = (value: AutocompleteProps["selectedKey"]) => {
+    setPlace(value);
+    setPlaceQuery(value?.toString() || "");
+  };
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex gap-4">
       {/* Country select */}
       <Autocomplete
+        className="basis-1/4"
         isClearable={false}
         label="Країна"
         selectedKey={country}
@@ -65,6 +74,7 @@ const SearchPlace: React.FC<SearchPlaceProps> = ({ countries, states }) => {
 
       {/* State select */}
       <Autocomplete
+        className="basis-1/4"
         isClearable={false}
         label="Область"
         selectedKey={state}
@@ -78,24 +88,22 @@ const SearchPlace: React.FC<SearchPlaceProps> = ({ countries, states }) => {
       </Autocomplete>
 
       {/* Place autocomplete (async) */}
-      {/* <Autocomplete
-        label="Архів"
+      <Autocomplete
+        className="basis-1/2"
+        inputValue={placeQuery}
         isClearable={false}
-        selectedKey={value}
-        onSelectionChange={onChange}
-        className={className}
+        isLoading={isLoading}
+        label="Населений пункт"
+        selectedKey={place}
+        onInputChange={handlePlaceInputChange}
+        onSelectionChange={handlePlaceChange}
       >
-        {archives.map((archive) => (
-          <AutocompleteItem key={archive.code} textValue={archive.code}>
-            <div>
-              <p>{archive.code}</p>
-              {!withoutTitle && (
-                <p className="opacity-70 text-sm text-wrap">{archive.title}</p>
-              )}
-            </div>
+        {places.map((placeOption: string) => (
+          <AutocompleteItem key={placeOption} textValue={placeOption}>
+            {placeOption}
           </AutocompleteItem>
         ))}
-      </Autocomplete> */}
+      </Autocomplete>
     </div>
   );
 };
