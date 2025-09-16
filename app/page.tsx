@@ -1,30 +1,34 @@
-import { Snippet } from "@heroui/snippet";
-import { Code } from "@heroui/code";
+import { NextPage } from "next";
 
 import { title, subtitle } from "@/components/primitives";
+import getCountries from "@/data/countries";
+import getStates from "@/data/states";
+// import getChurchAdministrations from "@/data/church-administrations";
+// import getConfessions from "@/data/confessions";
+// import getRecordTypes from "@/data/record-types";
+import SearchPlace from "@/components/search-place";
 
-export default function Home() {
+const Home: NextPage = async () => {
+  const countries = await getCountries();
+  const states = await getStates();
+  // const churchAdministrations = await getChurchAdministrations();
+  // const confessions = await getConfessions();
+  // const recordTypes = await getRecordTypes();
+
+  // eslint-disable-next-line no-console
+  console.log(countries, states);
+
   return (
-    <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
-      <div className="inline-block max-w-xl text-center justify-center">
-        <span className={title()}>Make&nbsp;</span>
-        <span className={title({ color: "violet" })}>beautiful&nbsp;</span>
-        <br />
-        <span className={title()}>
-          websites regardless of your design experience.
-        </span>
-        <div className={subtitle({ class: "mt-4" })}>
-          Beautiful, fast and modern React UI library.
-        </div>
+    <main className="container flex flex-col items-center justify-center p-4">
+      <div className="flex flex-col items-center gap-6">
+        <h1 className={title()}>Catalog Duck Archive</h1>
+        <SearchPlace
+          countries={countries}
+          states={states}
+        />
       </div>
-
-      <div className="mt-8">
-        <Snippet hideCopyButton hideSymbol variant="bordered">
-          <span>
-            Get started by editing <Code color="primary">app/page.tsx</Code>
-          </span>
-        </Snippet>
-      </div>
-    </section>
+    </main>
   );
-}
+};
+
+export default Home;

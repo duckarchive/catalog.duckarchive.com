@@ -13,6 +13,7 @@
   "dependencies": {
     "@duckarchive/framework": "github:duckarchive/framework",
     "@duckarchive/prisma": "github:duckarchive/prisma",
+    "@heroui/autocomplete": "^2.3.28",
     "@heroui/button": "2.2.20",
     "@heroui/code": "2.2.15",
     "@heroui/input": "2.4.20",
@@ -22,7 +23,7 @@
     "@heroui/navbar": "2.2.18",
     "@heroui/snippet": "2.2.21",
     "@heroui/switch": "2.2.18",
-    "@heroui/system": "2.4.16",
+    "@heroui/system": "2.4.22",
     "@heroui/theme": "2.4.16",
     "@prisma/client": "^6.16.2",
     "@prisma/extension-accelerate": "^2.0.2",
