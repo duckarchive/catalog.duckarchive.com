@@ -1,8 +1,10 @@
 import { NextPage } from "next";
 
 import SearchInput from "@/components/search-input";
+// import getTags from "@/data/tags";
 
 const Home: NextPage = async () => {
+  // const tags = await getTags();
 
   return (
     <div className="flex flex-col gap-1">

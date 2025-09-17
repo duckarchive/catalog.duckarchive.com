@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Autocomplete, AutocompleteItem, AutocompleteProps } from "@heroui/autocomplete";
+import { AutocompleteProps } from "@heroui/autocomplete";
 
 import { usePost } from "@/hooks/useApi";
 import useSearch from "@/hooks/useSearch";
@@ -11,12 +11,7 @@ import CatalogDuckTable from "@/components/table";
 
 type TableItem = SearchResponse[number];
 
-interface SearchProps {
-  countries: string[];
-  states: string[];
-}
-
-const Search: React.FC<SearchProps> = ({ countries, states }) => {
+const Search: React.FC = () => {
   const [defaultValues, setQueryParams] = useSearch();
   const [searchValues, setSearchValues] = useState<SearchRequest>(defaultValues);
   const { trigger, isMutating, data: searchResults } = usePost<SearchResponse, SearchRequest>(`/api/search`);
@@ -40,43 +35,10 @@ const Search: React.FC<SearchProps> = ({ countries, states }) => {
   return (
     <>
       <form className="flex flex-col gap-2 items-center" onSubmit={handleSubmit}>
-        <fieldset className="flex w-full gap-2" disabled={false}>
-          <legend className="sr-only">Локація</legend>
-          <Autocomplete
-            className="basis-1/4"
-            isClearable={false}
-            label="Країна"
-            selectedKey={searchValues.country}
-            onSelectionChange={handleSelectChange("country")}
-          >
-            {countries.map((country) => (
-              <AutocompleteItem key={country} textValue={country}>
-                {country}
-              </AutocompleteItem>
-            ))}
-          </Autocomplete>
-
-          <Autocomplete
-            className="basis-1/4"
-            isClearable={false}
-            label="Область"
-            selectedKey={searchValues.state}
-            onSelectionChange={handleSelectChange("state")}
-          >
-            {states.map((state) => (
-              <AutocompleteItem key={state} textValue={state}>
-                {state}
-              </AutocompleteItem>
-            ))}
-          </Autocomplete>
-
           <AutocompletePlace
-            country={searchValues.country}
-            state={searchValues.state}
             value={searchValues.place}
             onChange={handleSelectChange("place")}
           />
-        </fieldset>
       </form>
       <CatalogDuckTable<TableItem>
         isLoading={isMutating}
@@ -99,8 +61,6 @@ const Search: React.FC<SearchProps> = ({ countries, states }) => {
                 .filter(Boolean)
                 .join("-"),
           },
-          { headerName: "Країна", field: "country" },
-          { headerName: "Область", field: "state" },
           { headerName: "Нас.пункт", field: "place" },
         ]}
         rows={searchResults || []}

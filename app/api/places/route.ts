@@ -7,8 +7,6 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const query = searchParams.get("q");
     const take = searchParams.get("take");
-    const country = searchParams.get("country");
-    const state = searchParams.get("state");
 
     if (!query) {
       return NextResponse.json(
@@ -19,18 +17,14 @@ export async function GET(request: Request) {
 
     const places = await prisma.item.findMany({
       where: {
-        ...(country && { country }),
-        ...(state && { state }),
         place: {
           contains: query,
           mode: "insensitive",
         },
       },
-      distinct: ["country", "state", "place"],
+      distinct: ["place"],
       take: Math.min(Number(take) || 10, 100),
       select: {
-        country: true,
-        state: true,
         place: true,
       },
     });

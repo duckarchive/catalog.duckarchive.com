@@ -21,15 +21,11 @@ interface AutocompletePlaceProps
     | "onInputChange"
     | "onSelectionChange"
   > {
-  country: AutocompleteProps["selectedKey"];
-  state: AutocompleteProps["selectedKey"];
   value?: AutocompleteProps["selectedKey"];
   onChange: (place?: AutocompleteProps["selectedKey"]) => void;
 }
 
 const AutocompletePlace: React.FC<AutocompletePlaceProps> = ({
-  country,
-  state,
   value,
   onChange,
   ...autocompleteProps
@@ -48,8 +44,6 @@ const AutocompletePlace: React.FC<AutocompletePlaceProps> = ({
 
   const queryString = qs.stringify({
     q: debouncedPlaceQuery,
-    country,
-    state,
   });
   const apiUrl =
     debouncedPlaceQuery && debouncedPlaceQuery !== value

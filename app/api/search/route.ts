@@ -14,14 +14,11 @@ export type SearchResponse = Prisma.ItemGetPayload<{
 export async function POST(request: Request) {
   try {
     const {
-      country,
-      state,
       place,
-      church_name,
-      church_administration,
-      confession,
+      author,
+      author_administration,
       year,
-      record_type,
+      tags,
       fund,
       description,
       case: case_number, // 'case' is a reserved keyword
@@ -29,29 +26,20 @@ export async function POST(request: Request) {
 
     const where: Prisma.ItemWhereInput = {};
 
-    if (country) {
-      where.country = country;
-    }
-    if (state) {
-      where.state = state;
-    }
     if (place) {
       where.place = { contains: place, mode: "insensitive" };
     }
-    if (church_name) {
-      where.church_name = { contains: church_name, mode: "insensitive" };
+    if (author) {
+      where.author = { contains: author, mode: "insensitive" };
     }
-    if (church_administration) {
-      where.church_administration = church_administration;
+    if (author_administration) {
+      where.author_administration = author_administration;
     }
-    if (confession) {
-      where.confession = confession;
+    if (tags && tags.length > 0) {
+      where.tags = { hasSome: tags };
     }
     if (year) {
       where.year = year;
-    }
-    if (record_type) {
-      where.record_type = record_type;
     }
     if (fund) {
       where.fund = fund;
