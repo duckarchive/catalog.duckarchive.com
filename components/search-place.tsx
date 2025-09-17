@@ -1,18 +1,18 @@
 "use client";
 
-import { useState, useEffect, Key } from "react";
-import useSWR from "swr";
+import { useState, useEffect } from "react";
 import {
   Autocomplete,
   AutocompleteItem,
   AutocompleteProps,
 } from "@heroui/autocomplete";
+import qs from "qs";
+
+import { useGet } from "@/app/hooks/useApi";
 
 // import { Item } from "@/generated/prisma/client";
 
 // type PlaceValues = Partial<Pick<Item, "country" | "state" | "place">>;
-
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 interface SearchPlaceProps {
   countries: string[];
@@ -35,13 +35,17 @@ const SearchPlace: React.FC<SearchPlaceProps> = ({ countries, states }) => {
     return () => clearTimeout(timer);
   }, [placeQuery]);
 
-  // Use SWR for place autocomplete with debounced query
-  const { data: places = [], isLoading } = useSWR<string[]>(
+  const queryString = qs.stringify({
+    q: debouncedPlaceQuery,
+    country,
+    state,
+  });
+  const apiUrl =
     debouncedPlaceQuery && debouncedPlaceQuery !== place
-      ? `/api/places?q=${encodeURIComponent(debouncedPlaceQuery)}`
-      : null,
-    fetcher
-  );
+      ? `/api/places?${queryString}`
+      : null;
+
+  const { data: places = [], isLoading } = useGet<string[]>(apiUrl);
 
   const handlePlaceInputChange = (value: string) => {
     if (value === "") {
