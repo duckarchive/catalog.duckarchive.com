@@ -68,7 +68,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json(
       { error: "An error occurred while searching." },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }

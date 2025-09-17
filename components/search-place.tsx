@@ -8,7 +8,7 @@ import {
 } from "@heroui/autocomplete";
 import qs from "qs";
 
-import { useGet } from "@/app/hooks/useApi";
+import { useGet } from "@/hooks/useApi";
 
 // import { Item } from "@/generated/prisma/client";
 
