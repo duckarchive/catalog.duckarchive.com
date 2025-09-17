@@ -81,10 +81,27 @@ const Search: React.FC<SearchProps> = ({ countries, states }) => {
       <CatalogDuckTable<TableItem>
         isLoading={isMutating}
         columns={[
-          { headerName: "Архів", field: "archive.code" },
-          { headerName: "Фонд", field: "fund" },
-          { headerName: "Опис", field: "description" },
-          { headerName: "Справа", field: "case" },
+          {
+            headerName: "Запис",
+            colId: "full_code",
+            cellRenderer: (row: { value: number }) => (
+              <a
+                href={`https://inspector.duckarchive.com/search?q=${row.value}`}
+                className="text-blue-600 hover:underline"
+                target="_blank"
+                rel="noreferrer"
+              >
+                {row.value}
+              </a>
+            ),
+            valueGetter: (params) =>
+              [params.data?.archive?.code, params.data?.fund, params.data?.description, params.data?.case]
+                .filter(Boolean)
+                .join("-"),
+          },
+          { headerName: "Країна", field: "country" },
+          { headerName: "Область", field: "state" },
+          { headerName: "Нас.пункт", field: "place" },
         ]}
         rows={searchResults || []}
       />
