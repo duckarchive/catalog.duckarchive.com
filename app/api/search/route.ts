@@ -1,12 +1,18 @@
 import { NextResponse } from "next/server";
 
-import { Prisma } from "@/generated/prisma/client";
+import { Item, Prisma } from "@/generated/prisma/client";
 import prisma from "@/lib/db";
+
+export type SearchRequest = Partial<Item>;
+
+export type SearchResponse = Prisma.ItemGetPayload<{
+  include: {
+    archive: true;
+  };
+}>[];
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
-
     const {
       country,
       state,
@@ -19,7 +25,7 @@ export async function POST(request: Request) {
       fund,
       description,
       case: case_number, // 'case' is a reserved keyword
-    } = body;
+    }: SearchRequest = await request.json();
 
     const where: Prisma.ItemWhereInput = {};
 
@@ -59,16 +65,16 @@ export async function POST(request: Request) {
 
     const items = await prisma.item.findMany({
       where,
+      include: {
+        archive: true,
+      },
+      take: 20,
     });
 
     return NextResponse.json(items);
   } catch (error) {
-    // eslint-disable-next-line no-console
     console.error("Search API Error:", error);
 
-    return NextResponse.json(
-      { error: "An error occurred while searching." },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "An error occurred while searching." }, { status: 500 });
   }
 }

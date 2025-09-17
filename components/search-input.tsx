@@ -2,14 +2,12 @@
 
 import { Input } from "@heroui/input";
 import { useRouter } from "next/navigation";
-import { FaSearch } from "react-icons/fa";
 import { useState } from "react";
 import qs from "qs";
 
 const parseQ = (q: string) => {
-  const [_, place, year, __, title] =
-    q.match(/([а-яєіїґ\-.\s]{0,})\s{0,}((16|17|18|19|20)\d{2})?\s?(.+)?/i) ||
-    [];
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, place, year, __, title] = q.match(/([а-яєіїґ\-.\s]{0,})\s{0,}((16|17|18|19|20)\d{2})?\s?(.+)?/i) || [];
 
   if (!year && !__ && !title) {
     return { title: place?.trim() };

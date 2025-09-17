@@ -8,6 +8,10 @@ import { useRouter } from "next/navigation";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
+import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
+
+// Register all Community features
+ModuleRegistry.registerModules([AllCommunityModule]);
 
 interface ProvidersProps {
   themeProps?: ThemeProviderProps;

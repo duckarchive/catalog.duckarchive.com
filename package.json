@@ -29,6 +29,8 @@
     "@prisma/extension-accelerate": "^2.0.2",
     "@react-aria/ssr": "3.9.8",
     "@react-aria/visually-hidden": "3.8.23",
+    "ag-grid-community": "^33.3.2",
+    "ag-grid-react": "^33.3.2",
     "clsx": "2.1.1",
     "framer-motion": "11.13.1",
     "intl-messageformat": "10.7.16",
