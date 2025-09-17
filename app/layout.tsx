@@ -1,6 +1,4 @@
 import "@/styles/globals.css";
-import 'leaflet/dist/leaflet.css';
-import "../node_modules/@duckarchive/map/dist/style.css";
 import { Metadata, Viewport } from "next";
 import { Link } from "@heroui/link";
 import clsx from "clsx";

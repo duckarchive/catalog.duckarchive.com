@@ -12,10 +12,7 @@ const useSearch = (): [SearchRequest, (val: SearchRequest) => void] => {
 
   const setSearchParams = (search: SearchRequest) => {
     const q = qs.stringify(search, { skipNulls: true });
-
-    if (q) {
-      router.replace(`${pathname}?${q}`);
-    }
+    router.replace(`${pathname}?${q}`);
   };
 
   const parsed = qs.parse(searchPrams.toString());

@@ -14,6 +14,7 @@ export type SearchResponse = Prisma.ItemGetPayload<{
 export async function POST(request: Request) {
   try {
     const {
+      title,
       place,
       author,
       author_administration,
@@ -26,6 +27,9 @@ export async function POST(request: Request) {
 
     const where: Prisma.ItemWhereInput = {};
 
+    if (title) {
+      where.title = { contains: title, mode: "insensitive" };
+    }
     if (place) {
       where.place = { contains: place, mode: "insensitive" };
     }
