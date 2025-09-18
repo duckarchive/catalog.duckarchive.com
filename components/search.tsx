@@ -36,7 +36,6 @@ interface SearchProps {
 const Search: React.FC<SearchProps> = ({ archives }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [defaultValues, setQueryParams] = useSearch();
-  const [radius, setRadius] = useState(0);
   const [searchValues, setSearchValues] = useState<SearchRequest>(defaultValues);
   const { trigger, isMutating, data: searchResults } = usePost<SearchResponse, SearchRequest>(`/api/search`);
 
@@ -68,6 +67,10 @@ const Search: React.FC<SearchProps> = ({ archives }) => {
 
   const handleLngInputChange = (value: number) => {
     setSearchValues({ ...searchValues, lng: value });
+  };
+
+  const handleRadiusInputChange = (value: number) => {
+    setSearchValues({ ...searchValues, radius_m: value });
   };
 
   const handlePlaceInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -107,8 +110,8 @@ const Search: React.FC<SearchProps> = ({ archives }) => {
             position={[searchValues.lat ?? UKRAINE_CENTER[0], searchValues.lng ?? UKRAINE_CENTER[1]]}
             onPositionChange={handleGeoChange}
             year={searchValues.year || undefined}
-            radius={radius}
-            onRadiusChange={setRadius}
+            radius={searchValues.radius_m || 0}
+            onRadiusChange={(value) => setSearchValues({ ...searchValues, radius_m: value })}
           />
         </ModalContent>
       </Modal>
@@ -158,6 +161,21 @@ const Search: React.FC<SearchProps> = ({ archives }) => {
               value={searchValues.lng || undefined}
               onValueChange={handleLngInputChange}
               onClear={() => setSearchValues({ ...searchValues, lng: undefined })}
+            />
+            <NumberInput
+              label="Радіус"
+              type="number"
+              isClearable
+              formatOptions={{
+                style: "unit",
+                unit: "meter",
+                unitDisplay: "short",
+              }}
+              maxValue={10000}
+              color={searchValues.lat && searchValues.lng ? "primary" : "default"}
+              value={searchValues.radius_m || 0}
+              onValueChange={handleRadiusInputChange}
+              onClear={() => setSearchValues({ ...searchValues, radius_m: undefined })}
             />
           </fieldset>
           <div className="flex items-center justify-center shrink-0">або</div>
