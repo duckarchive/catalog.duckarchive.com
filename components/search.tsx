@@ -36,6 +36,7 @@ interface SearchProps {
 const Search: React.FC<SearchProps> = ({ archives }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [defaultValues, setQueryParams] = useSearch();
+  const [radius, setRadius] = useState(0);
   const [searchValues, setSearchValues] = useState<SearchRequest>(defaultValues);
   const { trigger, isMutating, data: searchResults } = usePost<SearchResponse, SearchRequest>(`/api/search`);
 
@@ -117,7 +118,7 @@ const Search: React.FC<SearchProps> = ({ archives }) => {
           />
         </div>
         <div className="flex flex-col md:flex-row gap-2 w-full">
-          <fieldset className="flex gap-2 basis-1/2 shrink-0">
+          <fieldset className="flex gap-2 basis-1/2">
             <Button
               aria-label="Switch between map and input mode"
               className="h-auto"
@@ -199,12 +200,16 @@ const Search: React.FC<SearchProps> = ({ archives }) => {
       </form>
       <Modal isOpen={isOpen} size="full" onClose={onClose} title="Виберіть місце на карті">
         <ModalContent className="pt-10">
-            <GeoDuckMap
-              key="geoduck-map"
-              className="rounded-lg"
-              position={[searchValues.lat ?? UKRAINE_CENTER[0], searchValues.lng ?? UKRAINE_CENTER[1]]}
-              onPositionChange={handleGeoChange}
-            />
+          <GeoDuckMap
+            key="geoduck-map"
+            className="rounded-lg text-danger"
+            position={[searchValues.lat ?? UKRAINE_CENTER[0], searchValues.lng ?? UKRAINE_CENTER[1]]}
+            onPositionChange={handleGeoChange}
+            year={searchValues.year || undefined}
+            onYearChange={handleYearChange}
+            radius={radius}
+            onRadiusChange={setRadius}
+          />
         </ModalContent>
       </Modal>
       <CatalogDuckTable<TableItem>
