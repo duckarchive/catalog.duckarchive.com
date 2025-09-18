@@ -99,6 +99,19 @@ const Search: React.FC<SearchProps> = ({ archives }) => {
 
   return (
     <>
+      <Modal isOpen={isOpen} size="full" onClose={onClose} title="Виберіть місце на карті">
+        <ModalContent className="pt-10">
+          <GeoDuckMap
+            key="geoduck-map"
+            className="rounded-lg text-danger"
+            position={[searchValues.lat ?? UKRAINE_CENTER[0], searchValues.lng ?? UKRAINE_CENTER[1]]}
+            onPositionChange={handleGeoChange}
+            year={searchValues.year || undefined}
+            radius={radius}
+            onRadiusChange={setRadius}
+          />
+        </ModalContent>
+      </Modal>
       <form className="flex flex-col gap-2 items-start" onSubmit={handleSubmit}>
         <div className="flex gap-2 w-full">
           <Input label="Заголовок справи" value={searchValues.title || ""} onChange={handleInputChange("title")} />
@@ -198,20 +211,6 @@ const Search: React.FC<SearchProps> = ({ archives }) => {
           Пошук
         </Button>
       </form>
-      <Modal isOpen={isOpen} size="full" onClose={onClose} title="Виберіть місце на карті">
-        <ModalContent className="pt-10">
-          <GeoDuckMap
-            key="geoduck-map"
-            className="rounded-lg text-danger"
-            position={[searchValues.lat ?? UKRAINE_CENTER[0], searchValues.lng ?? UKRAINE_CENTER[1]]}
-            onPositionChange={handleGeoChange}
-            year={searchValues.year || undefined}
-            onYearChange={handleYearChange}
-            radius={radius}
-            onRadiusChange={setRadius}
-          />
-        </ModalContent>
-      </Modal>
       <CatalogDuckTable<TableItem>
         isLoading={isMutating}
         columns={[
