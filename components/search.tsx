@@ -116,34 +116,36 @@ const Search: React.FC<SearchProps> = ({ archives }) => {
             maxValue={2000}
           />
         </div>
-        <div className="flex gap-2 w-full">
-          <Button
-            aria-label="Switch between map and input mode"
-            className="h-auto"
-            variant="flat"
-            color={searchValues.lat && searchValues.lng ? "primary" : "default"}
-            onPress={handleOpenMap}
-          >
-            <IoMap size={20} />
-          </Button>
-          <NumberInput
-            label="Широта (lat)"
-            type="number"
-            isClearable
-            color={searchValues.lat && searchValues.lng ? "primary" : "default"}
-            value={searchValues.lat || undefined}
-            onValueChange={handleLatInputChange}
-            onClear={() => setSearchValues({ ...searchValues, lat: undefined })}
-          />
-          <NumberInput
-            label="Довгота (lng)"
-            type="number"
-            isClearable
-            color={searchValues.lat && searchValues.lng ? "primary" : "default"}
-            value={searchValues.lng || undefined}
-            onValueChange={handleLngInputChange}
-            onClear={() => setSearchValues({ ...searchValues, lng: undefined })}
-          />
+        <div className="flex flex-col md:flex-row gap-2 w-full">
+          <fieldset className="flex gap-2 basis-1/2 shrink-0">
+            <Button
+              aria-label="Switch between map and input mode"
+              className="h-auto"
+              variant="flat"
+              color={searchValues.lat && searchValues.lng ? "primary" : "default"}
+              onPress={handleOpenMap}
+            >
+              <IoMap size={20} />
+            </Button>
+            <NumberInput
+              label="Широта (lat)"
+              type="number"
+              isClearable
+              color={searchValues.lat && searchValues.lng ? "primary" : "default"}
+              value={searchValues.lat || undefined}
+              onValueChange={handleLatInputChange}
+              onClear={() => setSearchValues({ ...searchValues, lat: undefined })}
+            />
+            <NumberInput
+              label="Довгота (lng)"
+              type="number"
+              isClearable
+              color={searchValues.lat && searchValues.lng ? "primary" : "default"}
+              value={searchValues.lng || undefined}
+              onValueChange={handleLngInputChange}
+              onClear={() => setSearchValues({ ...searchValues, lng: undefined })}
+            />
+          </fieldset>
           <div className="flex items-center justify-center shrink-0">або</div>
           <Input
             isClearable
@@ -196,13 +198,13 @@ const Search: React.FC<SearchProps> = ({ archives }) => {
         </Button>
       </form>
       <Modal isOpen={isOpen} size="full" onClose={onClose} title="Виберіть місце на карті">
-        <ModalContent>
-          <GeoDuckMap
-            key="geoduck-map"
-            className="rounded-lg"
-            position={[searchValues.lat ?? UKRAINE_CENTER[0], searchValues.lng ?? UKRAINE_CENTER[1]]}
-            onPositionChange={handleGeoChange}
-          />
+        <ModalContent className="pt-10">
+            <GeoDuckMap
+              key="geoduck-map"
+              className="rounded-lg"
+              position={[searchValues.lat ?? UKRAINE_CENTER[0], searchValues.lng ?? UKRAINE_CENTER[1]]}
+              onPositionChange={handleGeoChange}
+            />
         </ModalContent>
       </Modal>
       <CatalogDuckTable<TableItem>
