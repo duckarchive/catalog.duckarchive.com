@@ -90,11 +90,11 @@ const CoordinatesInput: React.FC<CoordinatesInputProps> = ({ value, onChange, ye
             trigger: `p-0 gap-1 w-auto`,
             content: "p-0 flex flex-col gap-2",
             title: "text-xs opacity-50",
-            indicator: "leading-none",
+            indicator: "inline-flex leading-none",
           }}
           disableIndicatorAnimation
           indicator={({ isOpen }) => (
-            <IoChevronDown className={`${isOpen ? "rotate-180" : ""} transition-transform inline`} />
+            <IoChevronDown size={16} className={`${isOpen ? "rotate-180" : ""} transition-transform inline`} />
           )}
           title={title}
         >

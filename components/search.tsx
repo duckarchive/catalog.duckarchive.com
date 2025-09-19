@@ -141,7 +141,7 @@ const Search: React.FC<SearchProps> = ({ archives, tags }) => {
                     trigger: `p-0 gap-1 w-auto`,
                     content: "p-0 flex flex-col gap-2",
                     title: "text-xs opacity-50",
-                    indicator: "leading-none",
+                    indicator: "inline-flex leading-none",
                   }}
                   disableIndicatorAnimation
                   indicator={({ isOpen }) => (
@@ -184,7 +184,6 @@ const Search: React.FC<SearchProps> = ({ archives, tags }) => {
             </Select>
           </div>
         </div>
-
         <Button
           type="submit"
           color="primary"
