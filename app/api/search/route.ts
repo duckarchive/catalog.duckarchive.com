@@ -18,6 +18,9 @@ export async function POST(request: Request) {
       place,
       author,
       author_administration,
+      lng,
+      lat,
+      radius_m,
       year,
       tags,
       fund,
@@ -25,43 +28,113 @@ export async function POST(request: Request) {
       case: case_number, // 'case' is a reserved keyword
     }: SearchRequest = await request.json();
 
-    const where: Prisma.ItemWhereInput = {};
+    // Build dynamic SQL query parts
+    const whereParts: Prisma.Sql[] = [];
+
+    // search allowed only by place or by geographical coordinates
+    if (place) {
+      whereParts.push(Prisma.sql`i.place ILIKE ${`%${place}%`}`);
+    } else if (lng && lat) {
+      const radiusValue = radius_m || 0;
+      whereParts.push(Prisma.sql`
+        ST_DWithin(
+          ST_SetSRID(ST_MakePoint(i.lng, i.lat), 4326)::geography,
+          ST_SetSRID(ST_MakePoint(${+lng}, ${+lat}), 4326)::geography,
+          COALESCE(i.radius_m, 0) + ${+radiusValue}
+        )
+      `);
+    }
 
     if (title) {
-      where.title = { contains: title, mode: "insensitive" };
-    }
-    if (place) {
-      where.place = { contains: place, mode: "insensitive" };
-    }
-    if (author) {
-      where.author = { contains: author, mode: "insensitive" };
-    }
-    if (author_administration) {
-      where.author_administration = author_administration;
-    }
-    if (tags && tags.length > 0) {
-      where.tags = { hasSome: tags };
-    }
-    if (year) {
-      where.year = year;
-    }
-    if (fund) {
-      where.fund = fund;
-    }
-    if (description) {
-      where.description = description;
-    }
-    if (case_number) {
-      where.case = case_number;
+      whereParts.push(Prisma.sql`i.title ILIKE ${`%${title}%`}`);
     }
 
-    const items = await prisma.item.findMany({
-      where,
-      include: {
-        archive: true,
-      },
-      take: 20,
-    });
+    if (author) {
+      whereParts.push(Prisma.sql`i.author ILIKE ${`%${author}%`}`);
+    }
+
+    if (author_administration) {
+      whereParts.push(Prisma.sql`i.author_administration = ${author_administration}`);
+    }
+
+    if (year) {
+      whereParts.push(Prisma.sql`i.year = ${year}`);
+    }
+
+    if (fund) {
+      whereParts.push(Prisma.sql`i.fund = ${fund}`);
+    }
+
+    if (description) {
+      whereParts.push(Prisma.sql`i.description = ${description}`);
+    }
+
+    if (case_number) {
+      whereParts.push(Prisma.sql`i.case = ${case_number}`);
+    }
+
+    if (tags && tags.length > 0) {
+      whereParts.push(Prisma.sql`i.tags && ARRAY[${Prisma.join(tags)}]::text[]`);
+    }
+    
+    const bodyQuery = whereParts.length > 0
+      ? Prisma.sql`WHERE ${Prisma.join(whereParts, " AND ")}`
+      : Prisma.sql``;
+
+    const query = Prisma.sql`
+      SELECT 
+        i.*,
+        a.id as archive_id,
+        a.title as archive_title
+      FROM "items" i
+      LEFT JOIN "archives" a ON i.archive_id = a.id
+      ${bodyQuery}
+      LIMIT 50
+    `;
+
+    console.log(query.text, query.values);
+
+    const rawResults = await prisma.$queryRaw<
+      {
+        id: number;
+        title: string;
+        place: string;
+        author: string;
+        author_administration: string;
+        lng: number;
+        lat: number;
+        year: number;
+        tags: string[];
+        fund: string;
+        description: string;
+        case: string;
+        archive_id: string;
+        archive_title: string;
+      }[]
+    >(query);
+
+    // // Transform the results to match the expected structure
+    const items = rawResults.map((row) => ({
+      id: row.id,
+      title: row.title,
+      place: row.place,
+      author: row.author,
+      author_administration: row.author_administration,
+      lng: row.lng,
+      lat: row.lat,
+      year: row.year,
+      tags: row.tags,
+      fund: row.fund,
+      description: row.description,
+      case: row.case,
+      archive_id: row.archive_id,
+      archive: row.archive_id
+        ? {
+            id: row.archive_id,
+            title: row.archive_title,
+          }
+        : null,
+    }));
 
     return NextResponse.json(items);
   } catch (error) {

@@ -5,9 +5,11 @@ import { NextPage } from "next";
 // import getRecordTypes from "@/data/record-types";
 import Search from "@/components/search";
 import { getArchives } from "@/data/archives";
+import getTags from "@/data/tags";
 
 const SearchPage: NextPage = async () => {
   const archives = await getArchives();
+  const tags = await getTags();
 
   // const churchAdministrations = await getChurchAdministrations();
   // const confessions = await getConfessions();
@@ -16,7 +18,7 @@ const SearchPage: NextPage = async () => {
   return (
     <div className="flex flex-col">
       <h1 className="text-lg font-bold">Пошук:</h1>
-      <Search archives={archives} />
+      <Search archives={archives} tags={tags} />
     </div>
   );
 };

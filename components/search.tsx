@@ -13,6 +13,7 @@ import { NumberInput } from "@heroui/number-input";
 import { Button } from "@heroui/button";
 import { Modal, ModalContent, useDisclosure } from "@heroui/modal";
 import { Accordion, AccordionItem } from "@heroui/accordion";
+import { Select, SelectItem } from "@heroui/select";
 import { FaSearch } from "react-icons/fa";
 import { IoChevronDown } from "react-icons/io5";
 import { Archives } from "@/data/archives";
@@ -31,9 +32,10 @@ type TableItem = SearchResponse[number];
 
 interface SearchProps {
   archives: Archives;
+  tags: string[];
 }
 
-const Search: React.FC<SearchProps> = ({ archives }) => {
+const Search: React.FC<SearchProps> = ({ archives, tags }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [defaultValues, setQueryParams] = useSearch();
   const [searchValues, setSearchValues] = useState<SearchRequest>(defaultValues);
@@ -54,7 +56,7 @@ const Search: React.FC<SearchProps> = ({ archives }) => {
   };
 
   const handleYearChange = (value: number) => {
-    setSearchValues({ ...searchValues, year: value });
+    setSearchValues({ ...searchValues, year: value || undefined });
   };
 
   const handleGeoChange = (position: [number, number]) => {
@@ -118,6 +120,22 @@ const Search: React.FC<SearchProps> = ({ archives }) => {
       <form className="flex flex-col gap-2 items-start" onSubmit={handleSubmit}>
         <div className="flex gap-2 w-full">
           <Input label="Заголовок справи" value={searchValues.title || ""} onChange={handleInputChange("title")} />
+          <Select
+            className="max-w-xs"
+            label="Теги"
+            selectionMode="multiple"
+            value={searchValues.tags || []}
+            onSelectionChange={(v) =>
+              setSearchValues({
+                ...searchValues,
+                tags: Array.from(v as Set<string>),
+              })
+            }
+          >
+            {tags.map((tag) => (
+              <SelectItem key={tag}>{tag}</SelectItem>
+            ))}
+          </Select>
           <NumberInput
             type="number"
             className="basis-32 shrink-0"

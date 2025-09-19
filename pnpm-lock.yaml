@@ -16,7 +16,7 @@ importers:
         version: https://codeload.github.com/duckarchive/map/tar.gz/e599a4aed4ab3487eefc7a627171a105b81901fe(0ed6b87cf0bf021ab4fdf59002cb3f22)
       '@duckarchive/prisma':
         specifier: github:duckarchive/prisma
-        version: https://codeload.github.com/duckarchive/prisma/tar.gz/958ad9c1e74011a146a2054020452fdf1f5402de(@prisma/client@6.16.2(prisma@6.16.2(typescript@5.6.3))(typescript@5.6.3))(prisma-zod-generator@0.8.13(prisma@6.16.2(typescript@5.6.3)))
+        version: https://codeload.github.com/duckarchive/prisma/tar.gz/e0c89b3916745729023287c8b7f29dc9236d2363(@prisma/client@6.16.2(prisma@6.16.2(typescript@5.6.3))(typescript@5.6.3))(prisma-zod-generator@0.8.13(prisma@6.16.2(typescript@5.6.3)))
       '@heroui/accordion':
         specifier: ^2.2.23
         version: 2.2.23(@heroui/system@2.4.22(@heroui/theme@2.4.16(tailwindcss@3.4.16))(framer-motion@11.13.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@heroui/theme@2.4.16(tailwindcss@3.4.16))(framer-motion@11.13.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -62,6 +62,9 @@ importers:
       '@heroui/number-input':
         specifier: ^2.0.17
         version: 2.0.17(@heroui/system@2.4.22(@heroui/theme@2.4.16(tailwindcss@3.4.16))(framer-motion@11.13.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@heroui/theme@2.4.16(tailwindcss@3.4.16))(framer-motion@11.13.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@heroui/select':
+        specifier: ^2.4.27
+        version: 2.4.27(@heroui/system@2.4.22(@heroui/theme@2.4.16(tailwindcss@3.4.16))(framer-motion@11.13.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@heroui/theme@2.4.16(tailwindcss@3.4.16))(framer-motion@11.13.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@heroui/snippet':
         specifier: 2.2.21
         version: 2.2.21(@heroui/system@2.4.22(@heroui/theme@2.4.16(tailwindcss@3.4.16))(framer-motion@11.13.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@heroui/theme@2.4.16(tailwindcss@3.4.16))(framer-motion@11.13.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -310,9 +313,9 @@ packages:
       tailwindcss:
         optional: true
 
-  '@duckarchive/prisma@https://codeload.github.com/duckarchive/prisma/tar.gz/958ad9c1e74011a146a2054020452fdf1f5402de':
-    resolution: {tarball: https://codeload.github.com/duckarchive/prisma/tar.gz/958ad9c1e74011a146a2054020452fdf1f5402de}
-    version: 2.3.1
+  '@duckarchive/prisma@https://codeload.github.com/duckarchive/prisma/tar.gz/e0c89b3916745729023287c8b7f29dc9236d2363':
+    resolution: {tarball: https://codeload.github.com/duckarchive/prisma/tar.gz/e0c89b3916745729023287c8b7f29dc9236d2363}
+    version: 2.4.0
     peerDependencies:
       '@prisma/client': '>=5'
       prisma-zod-generator: ^0.8.13
@@ -809,6 +812,15 @@ packages:
       react: '>=18 || >=19.0.0-rc.0'
       react-dom: '>=18 || >=19.0.0-rc.0'
 
+  '@heroui/select@2.4.27':
+    resolution: {integrity: sha512-CgMqVWYWcdHNOnSeMMraXFBXFsToyxZ9sSwszG3YlhGwaaj0yZonquMYgl5vHCnFLkGXwggNczl+vdDErLEsbw==}
+    peerDependencies:
+      '@heroui/system': '>=2.4.18'
+      '@heroui/theme': '>=2.4.17'
+      framer-motion: '>=11.5.6 || >=12.0.0-alpha.1'
+      react: '>=18 || >=19.0.0-rc.0'
+      react-dom: '>=18 || >=19.0.0-rc.0'
+
   '@heroui/shared-icons@2.1.10':
     resolution: {integrity: sha512-ePo60GjEpM0SEyZBGOeySsLueNDCqLsVL79Fq+5BphzlrBAcaKY7kUp74964ImtkXvknTxAWzuuTr3kCRqj6jg==}
     peerDependencies:
@@ -930,6 +942,12 @@ packages:
       react: '>=18 || >=19.0.0-rc.0'
       react-dom: '>=18 || >=19.0.0-rc.0'
 
+  '@heroui/use-aria-multiselect@2.4.18':
+    resolution: {integrity: sha512-b//0jJElrrxrqMuU1+W5H/P4xKzRsl5/uTFGclpdg8+mBlVtbfak32YhD9EEfFRDR7hHs116ezVmxjkEwry/GQ==}
+    peerDependencies:
+      react: '>=18 || >=19.0.0-rc.0'
+      react-dom: '>=18 || >=19.0.0-rc.0'
+
   '@heroui/use-aria-overlay@2.0.3':
     resolution: {integrity: sha512-R5cZh+Rg/X7iQpxNhWJkzsbthMVbxqyYkXx5ry0F2zy05viwnXKCSFQqbdKCU2f5QlEnv2oDd6KsK1AXCePG4g==}
     peerDependencies:
@@ -958,6 +976,11 @@ packages:
 
   '@heroui/use-draggable@2.1.17':
     resolution: {integrity: sha512-1vsMYdny24HRSDWVVBulfzRuGdhbRGIeEzLQpqQYXhUVKzdTWZG8S84NotKoqsLdjAHHtuDQAGmKM2IODASVIA==}
+    peerDependencies:
+      react: '>=18 || >=19.0.0-rc.0'
+
+  '@heroui/use-form-reset@2.0.1':
+    resolution: {integrity: sha512-6slKWiLtVfgZnVeHVkM9eXgjwI07u0CUaLt2kQpfKPqTSTGfbHgCYJFduijtThhTdKBhdH6HCmzTcnbVlAxBXw==}
     peerDependencies:
       react: '>=18 || >=19.0.0-rc.0'
 
@@ -1426,6 +1449,12 @@ packages:
 
   '@react-aria/live-announcer@3.4.4':
     resolution: {integrity: sha512-PTTBIjNRnrdJOIRTDGNifY2d//kA7GUAwRFJNOEwSNG4FW+Bq9awqLiflw0JkpyB0VNIwou6lqKPHZVLsGWOXA==}
+
+  '@react-aria/menu@3.19.1':
+    resolution: {integrity: sha512-hRYFdOOj3fYyoh/tJGxY1CWY80geNb3BT3DMNHgGBVMvnZ0E6k3WoQH+QZkVnwSnNIQAIPQFcYWPyZeE+ElEhA==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
+      react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
 
   '@react-aria/menu@3.19.2':
     resolution: {integrity: sha512-WzDLW2MotL0L5/LEwc5oGgISf2ODuw4FnRpF0Zk+J4tKFfC88odvKz848ubBvThRXuXEvL0BHY+WqtM+j9fn3g==}
@@ -4376,7 +4405,7 @@ snapshots:
       swr: 2.3.6(react@18.3.1)
       tailwindcss: 3.4.16
 
-  '@duckarchive/prisma@https://codeload.github.com/duckarchive/prisma/tar.gz/958ad9c1e74011a146a2054020452fdf1f5402de(@prisma/client@6.16.2(prisma@6.16.2(typescript@5.6.3))(typescript@5.6.3))(prisma-zod-generator@0.8.13(prisma@6.16.2(typescript@5.6.3)))':
+  '@duckarchive/prisma@https://codeload.github.com/duckarchive/prisma/tar.gz/e0c89b3916745729023287c8b7f29dc9236d2363(@prisma/client@6.16.2(prisma@6.16.2(typescript@5.6.3))(typescript@5.6.3))(prisma-zod-generator@0.8.13(prisma@6.16.2(typescript@5.6.3)))':
     dependencies:
       '@prisma/client': 6.16.2(prisma@6.16.2(typescript@5.6.3))(typescript@5.6.3)
       prisma-zod-generator: 0.8.13(prisma@6.16.2(typescript@5.6.3))
@@ -5038,6 +5067,33 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
+  '@heroui/select@2.4.27(@heroui/system@2.4.22(@heroui/theme@2.4.16(tailwindcss@3.4.16))(framer-motion@11.13.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@heroui/theme@2.4.16(tailwindcss@3.4.16))(framer-motion@11.13.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      '@heroui/aria-utils': 2.2.23(@heroui/theme@2.4.16(tailwindcss@3.4.16))(framer-motion@11.13.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@heroui/form': 2.1.26(@heroui/system@2.4.22(@heroui/theme@2.4.16(tailwindcss@3.4.16))(framer-motion@11.13.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@heroui/theme@2.4.16(tailwindcss@3.4.16))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@heroui/listbox': 2.3.25(@heroui/system@2.4.22(@heroui/theme@2.4.16(tailwindcss@3.4.16))(framer-motion@11.13.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@heroui/theme@2.4.16(tailwindcss@3.4.16))(framer-motion@11.13.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@heroui/popover': 2.3.26(@heroui/system@2.4.22(@heroui/theme@2.4.16(tailwindcss@3.4.16))(framer-motion@11.13.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@heroui/theme@2.4.16(tailwindcss@3.4.16))(framer-motion@11.13.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@heroui/react-utils': 2.1.13(react@18.3.1)
+      '@heroui/scroll-shadow': 2.3.17(@heroui/system@2.4.22(@heroui/theme@2.4.16(tailwindcss@3.4.16))(framer-motion@11.13.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@heroui/theme@2.4.16(tailwindcss@3.4.16))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@heroui/shared-icons': 2.1.10(react@18.3.1)
+      '@heroui/shared-utils': 2.1.11
+      '@heroui/spinner': 2.2.23(@heroui/theme@2.4.16(tailwindcss@3.4.16))(framer-motion@11.13.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@heroui/system': 2.4.22(@heroui/theme@2.4.16(tailwindcss@3.4.16))(framer-motion@11.13.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@heroui/theme': 2.4.16(tailwindcss@3.4.16)
+      '@heroui/use-aria-button': 2.2.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@heroui/use-aria-multiselect': 2.4.18(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@heroui/use-form-reset': 2.0.1(react@18.3.1)
+      '@heroui/use-safe-layout-effect': 2.1.8(react@18.3.1)
+      '@react-aria/focus': 3.21.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@react-aria/form': 3.1.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@react-aria/interactions': 3.25.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@react-aria/overlays': 3.29.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@react-aria/visually-hidden': 3.8.27(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@react-types/shared': 3.32.0(react@18.3.1)
+      framer-motion: 11.13.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+
   '@heroui/shared-icons@2.1.10(react@18.3.1)':
     dependencies:
       react: 18.3.1
@@ -5246,6 +5302,24 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
+  '@heroui/use-aria-multiselect@2.4.18(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      '@react-aria/i18n': 3.12.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@react-aria/interactions': 3.25.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@react-aria/label': 3.7.21(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@react-aria/listbox': 3.14.8(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@react-aria/menu': 3.19.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@react-aria/selection': 3.25.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@react-aria/utils': 3.30.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@react-stately/form': 3.2.1(react@18.3.1)
+      '@react-stately/list': 3.13.0(react@18.3.1)
+      '@react-stately/menu': 3.9.7(react@18.3.1)
+      '@react-types/button': 3.14.0(react@18.3.1)
+      '@react-types/overlays': 3.9.1(react@18.3.1)
+      '@react-types/shared': 3.32.0(react@18.3.1)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+
   '@heroui/use-aria-overlay@2.0.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@react-aria/focus': 3.21.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -5284,6 +5358,10 @@ snapshots:
       react: 18.3.1
     transitivePeerDependencies:
       - react-dom
+
+  '@heroui/use-form-reset@2.0.1(react@18.3.1)':
+    dependencies:
+      react: 18.3.1
 
   '@heroui/use-is-mobile@2.2.12(react@18.3.1)':
     dependencies:
@@ -5872,6 +5950,25 @@ snapshots:
   '@react-aria/live-announcer@3.4.4':
     dependencies:
       '@swc/helpers': 0.5.17
+
+  '@react-aria/menu@3.19.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      '@react-aria/focus': 3.21.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@react-aria/i18n': 3.12.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@react-aria/interactions': 3.25.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@react-aria/overlays': 3.29.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@react-aria/selection': 3.25.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@react-aria/utils': 3.30.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@react-stately/collections': 3.12.7(react@18.3.1)
+      '@react-stately/menu': 3.9.7(react@18.3.1)
+      '@react-stately/selection': 3.20.5(react@18.3.1)
+      '@react-stately/tree': 3.9.2(react@18.3.1)
+      '@react-types/button': 3.14.0(react@18.3.1)
+      '@react-types/menu': 3.10.4(react@18.3.1)
+      '@react-types/shared': 3.32.0(react@18.3.1)
+      '@swc/helpers': 0.5.17
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
 
   '@react-aria/menu@3.19.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
@@ -8187,7 +8284,7 @@ snapshots:
   normalize-package-data@2.5.0:
     dependencies:
       hosted-git-info: 2.8.9
-      resolve: 1.22.2
+      resolve: 1.22.10
       semver: 5.7.2
       validate-npm-package-license: 3.0.4
 
