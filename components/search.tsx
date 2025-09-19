@@ -91,9 +91,9 @@ const Search: React.FC<SearchProps> = ({ archives, tags }) => {
 
   return (
     <>
-      <form className="flex flex-row md:flex-col gap-2" onSubmit={handleSubmit}>
-        <div className="flex flex-col md:flex-row">
-          <div className="flex flex-col gap-2 pr-1 basis-1/2 shrink-0" onClick={handleOpenMap}>
+      <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
+        <div className="flex flex-col gap-2 md:flex-row">
+          <div className="flex flex-col gap-2 basis-1/2 shrink-0" onClick={handleOpenMap}>
             <CoordinatesInput
               isLoading={isMutating}
               year={searchValues.year || undefined}
@@ -106,7 +106,6 @@ const Search: React.FC<SearchProps> = ({ archives, tags }) => {
             />
             <Input
               isClearable
-              color={searchValues.place ? "primary" : "default"}
               value={searchValues.place || ""}
               onChange={handlePlaceInputChange}
               onClear={() => setSearchValues({ ...searchValues, place: undefined })}
@@ -115,7 +114,7 @@ const Search: React.FC<SearchProps> = ({ archives, tags }) => {
               labelPlacement="inside"
             />
           </div>
-          <div className="flex flex-col pl-1 gap-2 basis-1/2">
+          <div className="flex flex-col gap-2 basis-1/2">
             <div className="flex flex-col">
               <div className="flex gap-2">
                 <Input
