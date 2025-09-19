@@ -92,7 +92,7 @@ const Search: React.FC<SearchProps> = ({ archives, tags }) => {
   return (
     <>
       <form className="flex flex-col md:flex-row items-start" onSubmit={handleSubmit}>
-        <div className="flex flex-col gap-2 basis-1/2">
+        <div className="flex flex-col pr-1 gap-2 basis-1/2">
           <Input label="Заголовок справи" value={searchValues.title || ""} onChange={handleInputChange("title")} />
           <Select
             className="max-w-xs"
@@ -118,20 +118,6 @@ const Search: React.FC<SearchProps> = ({ archives, tags }) => {
             label="Рік"
             labelPlacement="inside"
           />
-          <div className="flex flex-col md:flex-row gap-2 w-full">
-            <div className="flex items-center justify-center shrink-0">або</div>
-            <Input
-              isClearable
-              className="basis-1/2 shrink-0"
-              color={searchValues.place ? "primary" : "default"}
-              value={searchValues.place || ""}
-              onChange={handlePlaceInputChange}
-              onClear={() => setSearchValues({ ...searchValues, place: undefined })}
-              pattern="[\u0400-\u04FF\u0500-\u052F]+"
-              label="Населений пункт"
-              labelPlacement="inside"
-            />
-          </div>
           <Accordion isCompact className="p-0" variant="light">
             <AccordionItem
               key="map-help"
@@ -174,7 +160,7 @@ const Search: React.FC<SearchProps> = ({ archives, tags }) => {
             Пошук
           </Button>
         </div>
-        <div className="flex flex-col gap-0 h-64 basis-1/2 shrink-0" onClick={handleOpenMap}>
+        <div className="flex flex-col gap-2 pl-1 basis-1/2 shrink-0" onClick={handleOpenMap}>
           <CoordinatesInput
             isLoading={isMutating}
             year={searchValues.year || undefined}
@@ -184,6 +170,17 @@ const Search: React.FC<SearchProps> = ({ archives, tags }) => {
               radius_m: searchValues.radius_m || undefined,
             }}
             onChange={(value) => setSearchValues({ ...searchValues, ...value })}
+          />
+          <Input
+            isClearable
+            className="basis-1/2 shrink-0"
+            color={searchValues.place ? "primary" : "default"}
+            value={searchValues.place || ""}
+            onChange={handlePlaceInputChange}
+            onClear={() => setSearchValues({ ...searchValues, place: undefined })}
+            pattern="[\u0400-\u04FF\u0500-\u052F]+"
+            label="Назва населеного пункту"
+            labelPlacement="inside"
           />
         </div>
       </form>

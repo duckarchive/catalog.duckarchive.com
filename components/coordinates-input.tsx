@@ -62,7 +62,7 @@ const CoordinatesInput: React.FC<CoordinatesInputProps> = ({ value, onChange, ye
 
   const latLng: [number, number] = [+(coordinates.lat || UKRAINE_CENTER[0]), +(coordinates.lng || UKRAINE_CENTER[1])];
   return (
-    <>
+    <div className="h-64 flex flex-col gap-0">
       <div className="h-full" onClick={onOpen}>
         {!isOpen && (
           <GeoDuckMap
@@ -80,14 +80,13 @@ const CoordinatesInput: React.FC<CoordinatesInputProps> = ({ value, onChange, ye
       </div>
       <Accordion isCompact className="p-0" variant="light">
         <AccordionItem
-          as="fieldset"
           key="map-help"
-          aria-label="Ручне введення координат"
           className="flex flex-col"
           classNames={{
             trigger: `p-0 gap-1 w-auto`,
             content: "p-0 flex flex-col gap-2",
-            title: "text-sm opacity-50",
+            title: "text-xs opacity-50",
+            indicator: "leading-none",
           }}
           disableIndicatorAnimation
           indicator={({ isOpen }) => (
@@ -95,7 +94,7 @@ const CoordinatesInput: React.FC<CoordinatesInputProps> = ({ value, onChange, ye
           )}
           title={`${value.lat},${value.lng}${value.radius_m ? ` ±${value.radius_m}м` : ""}`}
         >
-          <fieldset  className="flex gap-2">
+          <fieldset aria-label="Ручне введення координат" className="flex gap-2">
             <Input
               isDisabled={isLoading}
               label="Широта (lat)"
@@ -146,7 +145,7 @@ const CoordinatesInput: React.FC<CoordinatesInputProps> = ({ value, onChange, ye
           />
         </ModalContent>
       </Modal>
-    </>
+    </div>
   );
 };
 
