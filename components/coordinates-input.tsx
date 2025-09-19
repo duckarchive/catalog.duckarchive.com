@@ -135,7 +135,7 @@ const CoordinatesInput: React.FC<CoordinatesInputProps> = ({ value, onChange, ye
       </Accordion>
 
       <Modal isOpen={isOpen} size="5xl" onClose={onClose} title="Виберіть місце на карті">
-        <ModalContent className="h-[90vh]">
+        <ModalContent className="h-[80vh] md:h-[90vh]">
           <GeoDuckMap
             key="geoduck-map"
             className="rounded-lg text-danger"
