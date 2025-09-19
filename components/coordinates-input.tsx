@@ -49,7 +49,7 @@ const CoordinatesInput: React.FC<CoordinatesInputProps> = ({ value, onChange, ye
     if (!isOpen && debouncedCoordinates) {
       onChange(debouncedCoordinates);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen, debouncedCoordinates]);
 
   const handleGeoChange = (position: [number, number]) => {
@@ -61,6 +61,10 @@ const CoordinatesInput: React.FC<CoordinatesInputProps> = ({ value, onChange, ye
   };
 
   const latLng: [number, number] = [+(coordinates.lat || UKRAINE_CENTER[0]), +(coordinates.lng || UKRAINE_CENTER[1])];
+  const title =
+    coordinates.lat && coordinates.lng
+      ? `${coordinates.lat},${coordinates.lng}${coordinates.radius_m ? ` ±${coordinates.radius_m}м` : ""}`
+      : "Оберіть місце на карті";
   return (
     <div className="h-64 flex flex-col gap-0">
       <div className="h-full" onClick={onOpen}>
@@ -92,7 +96,7 @@ const CoordinatesInput: React.FC<CoordinatesInputProps> = ({ value, onChange, ye
           indicator={({ isOpen }) => (
             <IoChevronDown className={`${isOpen ? "rotate-180" : ""} transition-transform inline`} />
           )}
-          title={`${value.lat},${value.lng}${value.radius_m ? ` ±${value.radius_m}м` : ""}`}
+          title={title}
         >
           <fieldset aria-label="Ручне введення координат" className="flex gap-2">
             <Input

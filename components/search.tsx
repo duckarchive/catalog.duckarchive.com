@@ -91,98 +91,109 @@ const Search: React.FC<SearchProps> = ({ archives, tags }) => {
 
   return (
     <>
-      <form className="flex flex-col md:flex-row items-start" onSubmit={handleSubmit}>
-        <div className="flex flex-col pr-1 gap-2 basis-1/2">
-          <Input label="Заголовок справи" value={searchValues.title || ""} onChange={handleInputChange("title")} />
-          <Select
-            className="max-w-xs"
-            label="Теги"
-            selectionMode="multiple"
-            value={searchValues.tags || []}
-            onSelectionChange={(v) =>
-              setSearchValues({
-                ...searchValues,
-                tags: Array.from(v as Set<string>),
-              })
-            }
-          >
-            {tags.map((tag) => (
-              <SelectItem key={tag}>{tag}</SelectItem>
-            ))}
-          </Select>
-          <Input
-            type="number"
-            className="basis-32 shrink-0"
-            value={searchValues.year}
-            onValueChange={handleYearChange}
-            label="Рік"
-            labelPlacement="inside"
-          />
-          <Accordion isCompact className="p-0" variant="light">
-            <AccordionItem
-              key="map-help"
-              aria-label="Open map to select location"
-              className="flex flex-col"
-              classNames={{
-                trigger: `p-0 gap-1 w-auto`,
-                content: "p-0 flex flex-col gap-2",
-                title: "text-sm opacity-50",
+      <form className="flex flex-row md:flex-col gap-2" onSubmit={handleSubmit}>
+        <div className="flex flex-col md:flex-row">
+          <div className="flex flex-col gap-2 pr-1 basis-1/2 shrink-0" onClick={handleOpenMap}>
+            <CoordinatesInput
+              isLoading={isMutating}
+              year={searchValues.year || undefined}
+              value={{
+                lat: searchValues.lat || undefined,
+                lng: searchValues.lng || undefined,
+                radius_m: searchValues.radius_m || undefined,
               }}
-              disableIndicatorAnimation
-              indicator={({ isOpen }) => (
-                <IoChevronDown className={`${isOpen ? "rotate-180" : ""} transition-transform inline`} />
-              )}
-              title="Розгорніть для вводу архівних реквізитів"
-            >
-              <SelectArchive
-                archives={archives}
-                value={searchValues.archive_id}
-                onChange={(v) => setSearchValues({ ...searchValues, archive_id: v?.toString() || undefined })}
-              />
+              onChange={(value) => setSearchValues({ ...searchValues, ...value })}
+            />
+            <Input
+              isClearable
+              color={searchValues.place ? "primary" : "default"}
+              value={searchValues.place || ""}
+              onChange={handlePlaceInputChange}
+              onClear={() => setSearchValues({ ...searchValues, place: undefined })}
+              pattern="[\u0400-\u04FF\u0500-\u052F]+"
+              label="Назва населеного пункту"
+              labelPlacement="inside"
+            />
+          </div>
+          <div className="flex flex-col pl-1 gap-2 basis-1/2">
+            <div className="flex flex-col">
               <div className="flex gap-2">
-                <Input label="Фонд" value={searchValues.fund || ""} onChange={handleInputChange("fund")} />
                 <Input
-                  label="Опис"
-                  value={searchValues.description || ""}
-                  onChange={handleInputChange("description")}
+                  label="Заголовок справи"
+                  value={searchValues.title || ""}
+                  onChange={handleInputChange("title")}
                 />
-                <Input label="Справа" value={searchValues.case || ""} onChange={handleInputChange("case")} />
+                <Input
+                  type="number"
+                  className="basis-32 shrink-0"
+                  value={searchValues.year}
+                  onValueChange={handleYearChange}
+                  label="Рік"
+                  labelPlacement="inside"
+                />
               </div>
-            </AccordionItem>
-          </Accordion>
-          <Button
-            type="submit"
-            color="primary"
-            size="lg"
-            className="w-full font-bold text-lg"
-            startContent={<FaSearch />}
-          >
-            Пошук
-          </Button>
+              <Accordion isCompact className="p-0" variant="light">
+                <AccordionItem
+                  key="map-help"
+                  aria-label="Open map to select location"
+                  className="flex flex-col"
+                  classNames={{
+                    trigger: `p-0 gap-1 w-auto`,
+                    content: "p-0 flex flex-col gap-2",
+                    title: "text-xs opacity-50",
+                    indicator: "leading-none",
+                  }}
+                  disableIndicatorAnimation
+                  indicator={({ isOpen }) => (
+                    <IoChevronDown className={`${isOpen ? "rotate-180" : ""} transition-transform inline`} />
+                  )}
+                  title="Розгорніть для вводу архівних реквізитів"
+                >
+                  <SelectArchive
+                    archives={archives}
+                    value={searchValues.archive_id}
+                    onChange={(v) => setSearchValues({ ...searchValues, archive_id: v?.toString() || undefined })}
+                  />
+                  <div className="flex gap-2">
+                    <Input label="Фонд" value={searchValues.fund || ""} onChange={handleInputChange("fund")} />
+                    <Input
+                      label="Опис"
+                      value={searchValues.description || ""}
+                      onChange={handleInputChange("description")}
+                    />
+                    <Input label="Справа" value={searchValues.case || ""} onChange={handleInputChange("case")} />
+                  </div>
+                </AccordionItem>
+              </Accordion>
+            </div>
+            <Select
+              className="grow-1"
+              label="Теги"
+              selectionMode="multiple"
+              value={searchValues.tags || []}
+              onSelectionChange={(v) =>
+                setSearchValues({
+                  ...searchValues,
+                  tags: Array.from(v as Set<string>),
+                })
+              }
+            >
+              {tags.map((tag) => (
+                <SelectItem key={tag}>{tag}</SelectItem>
+              ))}
+            </Select>
+          </div>
         </div>
-        <div className="flex flex-col gap-2 pl-1 basis-1/2 shrink-0" onClick={handleOpenMap}>
-          <CoordinatesInput
-            isLoading={isMutating}
-            year={searchValues.year || undefined}
-            value={{
-              lat: searchValues.lat || undefined,
-              lng: searchValues.lng || undefined,
-              radius_m: searchValues.radius_m || undefined,
-            }}
-            onChange={(value) => setSearchValues({ ...searchValues, ...value })}
-          />
-          <Input
-            isClearable
-            className="basis-1/2 shrink-0"
-            color={searchValues.place ? "primary" : "default"}
-            value={searchValues.place || ""}
-            onChange={handlePlaceInputChange}
-            onClear={() => setSearchValues({ ...searchValues, place: undefined })}
-            pattern="[\u0400-\u04FF\u0500-\u052F]+"
-            label="Назва населеного пункту"
-            labelPlacement="inside"
-          />
-        </div>
+
+        <Button
+          type="submit"
+          color="primary"
+          size="lg"
+          className="w-full font-bold text-lg"
+          startContent={<FaSearch />}
+        >
+          Пошук
+        </Button>
       </form>
       <CatalogDuckTable<TableItem>
         isLoading={isMutating}
