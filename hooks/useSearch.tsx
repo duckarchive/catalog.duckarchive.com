@@ -12,16 +12,14 @@ const useSearch = (): [SearchRequest, (val: SearchRequest) => void] => {
 
   const setSearchParams = (search: SearchRequest) => {
     const q = qs.stringify(search, { skipNulls: true });
-    router.replace(`${pathname}?${q}`);
+    if (q !== searchPrams.toString()) {
+      router.replace(`${pathname}?${q}`);
+    }
   };
 
   const parsed = qs.parse(searchPrams.toString());
-  const params = {
-    ...parsed,
-    year: parsed.year ? Number(parsed.year) : undefined,
-  };
 
-  return [params, setSearchParams];
+  return [parsed, setSearchParams];
 };
 
 export default useSearch;

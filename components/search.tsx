@@ -1,7 +1,4 @@
 "use client";
-import "leaflet/dist/leaflet.css";
-import "../node_modules/@duckarchive/map/dist/style.css";
-
 import { useState, useEffect } from "react";
 
 import { usePost } from "@/hooks/useApi";
@@ -9,24 +6,15 @@ import useSearch from "@/hooks/useSearch";
 import { SearchRequest, SearchResponse } from "@/app/api/search/route";
 import CatalogDuckTable from "@/components/table";
 import { Input } from "@heroui/input";
-import { NumberInput } from "@heroui/number-input";
 import { Button } from "@heroui/button";
-import { Modal, ModalContent, useDisclosure } from "@heroui/modal";
 import { Accordion, AccordionItem } from "@heroui/accordion";
 import { Select, SelectItem } from "@heroui/select";
 import { FaSearch } from "react-icons/fa";
 import { IoChevronDown } from "react-icons/io5";
 import { Archives } from "@/data/archives";
 import SelectArchive from "@/components/select-archive";
-import dynamic from "next/dynamic";
-import { IoMap } from "react-icons/io5";
 import TagChip from "@/components/tag-chip";
-
-const UKRAINE_CENTER: [number, number] = [49.8397, 24.0297];
-
-const GeoDuckMap = dynamic(() => import("@duckarchive/map").then((mod) => mod.default), {
-  ssr: false,
-});
+import CoordinatesInput from "@/components/coordinates-input";
 
 type TableItem = SearchResponse[number];
 
@@ -36,7 +24,6 @@ interface SearchProps {
 }
 
 const Search: React.FC<SearchProps> = ({ archives, tags }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const [defaultValues, setQueryParams] = useSearch();
   const [searchValues, setSearchValues] = useState<SearchRequest>(defaultValues);
   const { trigger, isMutating, data: searchResults } = usePost<SearchResponse, SearchRequest>(`/api/search`);
@@ -55,25 +42,25 @@ const Search: React.FC<SearchProps> = ({ archives, tags }) => {
     setSearchValues({ ...searchValues, [key]: value });
   };
 
-  const handleYearChange = (value: number) => {
+  const handleYearChange = (value: string) => {
     setSearchValues({ ...searchValues, year: value || undefined });
   };
 
-  const handleGeoChange = (position: [number, number]) => {
-    setSearchValues({ ...searchValues, lat: position[0], lng: position[1] });
-  };
+  // const handleGeoChange = (position: [number, number]) => {
+  //   setSearchValues({ ...searchValues, lat: position[0], lng: position[1] });
+  // };
 
-  const handleLatInputChange = (value: number) => {
-    setSearchValues({ ...searchValues, lat: value });
-  };
+  // const handleLatInputChange = (value: number) => {
+  //   setSearchValues({ ...searchValues, lat: value });
+  // };
 
-  const handleLngInputChange = (value: number) => {
-    setSearchValues({ ...searchValues, lng: value });
-  };
+  // const handleLngInputChange = (value: number) => {
+  //   setSearchValues({ ...searchValues, lng: value });
+  // };
 
-  const handleRadiusInputChange = (value: number) => {
-    setSearchValues({ ...searchValues, radius_m: value });
-  };
+  // const handleRadiusInputChange = (value: number) => {
+  //   setSearchValues({ ...searchValues, radius_m: value });
+  // };
 
   const handlePlaceInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (searchValues.lat || searchValues.lng) {
@@ -94,7 +81,7 @@ const Search: React.FC<SearchProps> = ({ archives, tags }) => {
       }
     }
     setSearchValues({ ...searchValues, place: undefined });
-    onOpen();
+    // onOpen();
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -104,21 +91,8 @@ const Search: React.FC<SearchProps> = ({ archives, tags }) => {
 
   return (
     <>
-      <Modal isOpen={isOpen} size="full" onClose={onClose} title="Виберіть місце на карті">
-        <ModalContent className="pt-10">
-          <GeoDuckMap
-            key="geoduck-map"
-            className="rounded-lg text-danger"
-            position={[searchValues.lat ?? UKRAINE_CENTER[0], searchValues.lng ?? UKRAINE_CENTER[1]]}
-            onPositionChange={handleGeoChange}
-            year={searchValues.year || undefined}
-            radius={searchValues.radius_m || 0}
-            onRadiusChange={(value) => setSearchValues({ ...searchValues, radius_m: value })}
-          />
-        </ModalContent>
-      </Modal>
-      <form className="flex flex-col gap-2 items-start" onSubmit={handleSubmit}>
-        <div className="flex gap-2 w-full">
+      <form className="flex flex-col md:flex-row items-start" onSubmit={handleSubmit}>
+        <div className="flex flex-col gap-2 basis-1/2">
           <Input label="Заголовок справи" value={searchValues.title || ""} onChange={handleInputChange("title")} />
           <Select
             className="max-w-xs"
@@ -136,116 +110,82 @@ const Search: React.FC<SearchProps> = ({ archives, tags }) => {
               <SelectItem key={tag}>{tag}</SelectItem>
             ))}
           </Select>
-          <NumberInput
+          <Input
             type="number"
             className="basis-32 shrink-0"
             value={searchValues.year}
             onValueChange={handleYearChange}
             label="Рік"
             labelPlacement="inside"
-            formatOptions={{
-              useGrouping: false,
-              unitDisplay: "short",
-            }}
-            minValue={1400}
-            maxValue={2000}
           />
-        </div>
-        <div className="flex flex-col md:flex-row gap-2 w-full">
-          <fieldset className="flex gap-2 basis-1/2">
-            <Button
-              aria-label="Switch between map and input mode"
-              className="h-auto"
-              variant="flat"
-              color={searchValues.lat && searchValues.lng ? "primary" : "default"}
-              onPress={handleOpenMap}
-            >
-              <IoMap size={20} />
-            </Button>
-            <NumberInput
-              label="Широта (lat)"
-              type="number"
+          <div className="flex flex-col md:flex-row gap-2 w-full">
+            <div className="flex items-center justify-center shrink-0">або</div>
+            <Input
               isClearable
-              color={searchValues.lat && searchValues.lng ? "primary" : "default"}
-              value={searchValues.lat || undefined}
-              onValueChange={handleLatInputChange}
-              onClear={() => setSearchValues({ ...searchValues, lat: undefined })}
+              className="basis-1/2 shrink-0"
+              color={searchValues.place ? "primary" : "default"}
+              value={searchValues.place || ""}
+              onChange={handlePlaceInputChange}
+              onClear={() => setSearchValues({ ...searchValues, place: undefined })}
+              pattern="[\u0400-\u04FF\u0500-\u052F]+"
+              label="Населений пункт"
+              labelPlacement="inside"
             />
-            <NumberInput
-              label="Довгота (lng)"
-              type="number"
-              isClearable
-              color={searchValues.lat && searchValues.lng ? "primary" : "default"}
-              value={searchValues.lng || undefined}
-              onValueChange={handleLngInputChange}
-              onClear={() => setSearchValues({ ...searchValues, lng: undefined })}
-            />
-            <NumberInput
-              label="Радіус"
-              type="number"
-              isClearable
-              formatOptions={{
-                style: "unit",
-                unit: "meter",
-                unitDisplay: "short",
+          </div>
+          <Accordion isCompact className="p-0" variant="light">
+            <AccordionItem
+              key="map-help"
+              aria-label="Open map to select location"
+              className="flex flex-col"
+              classNames={{
+                trigger: `p-0 gap-1 w-auto`,
+                content: "p-0 flex flex-col gap-2",
+                title: "text-sm opacity-50",
               }}
-              maxValue={10000}
-              color={searchValues.lat && searchValues.lng ? "primary" : "default"}
-              value={searchValues.radius_m || 0}
-              onValueChange={handleRadiusInputChange}
-              onClear={() => setSearchValues({ ...searchValues, radius_m: undefined })}
-            />
-          </fieldset>
-          <div className="flex items-center justify-center shrink-0">або</div>
-          <Input
-            isClearable
-            className="basis-1/2 shrink-0"
-            color={searchValues.place ? "primary" : "default"}
-            value={searchValues.place || ""}
-            onChange={handlePlaceInputChange}
-            onClear={() => setSearchValues({ ...searchValues, place: undefined })}
-            pattern="[\u0400-\u04FF\u0500-\u052F]+"
-            label="Населений пункт"
-            labelPlacement="inside"
+              disableIndicatorAnimation
+              indicator={({ isOpen }) => (
+                <IoChevronDown className={`${isOpen ? "rotate-180" : ""} transition-transform inline`} />
+              )}
+              title="Розгорніть для вводу архівних реквізитів"
+            >
+              <SelectArchive
+                archives={archives}
+                value={searchValues.archive_id}
+                onChange={(v) => setSearchValues({ ...searchValues, archive_id: v?.toString() || undefined })}
+              />
+              <div className="flex gap-2">
+                <Input label="Фонд" value={searchValues.fund || ""} onChange={handleInputChange("fund")} />
+                <Input
+                  label="Опис"
+                  value={searchValues.description || ""}
+                  onChange={handleInputChange("description")}
+                />
+                <Input label="Справа" value={searchValues.case || ""} onChange={handleInputChange("case")} />
+              </div>
+            </AccordionItem>
+          </Accordion>
+          <Button
+            type="submit"
+            color="primary"
+            size="lg"
+            className="w-full font-bold text-lg"
+            startContent={<FaSearch />}
+          >
+            Пошук
+          </Button>
+        </div>
+        <div className="flex flex-col gap-0 h-64 basis-1/2 shrink-0" onClick={handleOpenMap}>
+          <CoordinatesInput
+            isLoading={isMutating}
+            year={searchValues.year || undefined}
+            value={{
+              lat: searchValues.lat || undefined,
+              lng: searchValues.lng || undefined,
+              radius_m: searchValues.radius_m || undefined,
+            }}
+            onChange={(value) => setSearchValues({ ...searchValues, ...value })}
           />
         </div>
-        <Accordion isCompact className="p-0" variant="light">
-          <AccordionItem
-            key="map-help"
-            aria-label="Open map to select location"
-            className="flex flex-col"
-            classNames={{
-              trigger: `p-0 gap-1 w-auto`,
-              content: "p-0 flex flex-col gap-2",
-              title: "text-sm opacity-50",
-            }}
-            disableIndicatorAnimation
-            indicator={({ isOpen }) => (
-              <IoChevronDown className={`${isOpen ? "rotate-180" : ""} transition-transform inline`} />
-            )}
-            title="Розгорніть для вводу архівних реквізитів"
-          >
-            <SelectArchive
-              archives={archives}
-              value={searchValues.archive_id}
-              onChange={(v) => setSearchValues({ ...searchValues, archive_id: v?.toString() || undefined })}
-            />
-            <div className="flex gap-2">
-              <Input label="Фонд" value={searchValues.fund || ""} onChange={handleInputChange("fund")} />
-              <Input label="Опис" value={searchValues.description || ""} onChange={handleInputChange("description")} />
-              <Input label="Справа" value={searchValues.case || ""} onChange={handleInputChange("case")} />
-            </div>
-          </AccordionItem>
-        </Accordion>
-        <Button
-          type="submit"
-          color="primary"
-          size="lg"
-          className="w-full font-bold text-lg"
-          startContent={<FaSearch />}
-        >
-          Пошук
-        </Button>
       </form>
       <CatalogDuckTable<TableItem>
         isLoading={isMutating}

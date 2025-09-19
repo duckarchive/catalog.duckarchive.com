@@ -3,7 +3,11 @@ import { NextResponse } from "next/server";
 import { Item, Prisma } from "@/generated/prisma/client";
 import prisma from "@/lib/db";
 
-export type SearchRequest = Partial<Item>;
+export type SearchRequest = Omit<Partial<Item>, "lat" | "lng" | "year"> & {
+  lat?: string;
+  lng?: string;
+  year?: string;
+};
 
 export type SearchResponse = Prisma.ItemGetPayload<{
   include: {
@@ -58,7 +62,7 @@ export async function POST(request: Request) {
     }
 
     if (year) {
-      whereParts.push(Prisma.sql`i.year = ${year}`);
+      whereParts.push(Prisma.sql`i.year = ${+year}`);
     }
 
     if (fund) {
