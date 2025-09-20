@@ -10,6 +10,7 @@ import dynamic from "next/dynamic";
 import { IoChevronDown } from "react-icons/io5";
 import { useEffect, useState } from "react";
 import { Input } from "@heroui/input";
+import { parseMapLinkUrl } from "@/lib/parse";
 
 const UKRAINE_CENTER: [number, number] = [49.0139, 31.2858];
 
@@ -34,6 +35,7 @@ const CoordinatesInput: React.FC<CoordinatesInputProps> = ({ value, onChange, ye
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [coordinates, setCoordinates] = useState<Coordinates>(value);
   const [debouncedCoordinates, setDebouncedCoordinates] = useState<Coordinates | undefined>();
+  const [formErrors, setFormErrors] = useState<Coordinates>({});
 
   // Debounce coordinate changes to avoid excessive updates
   useEffect(() => {
@@ -56,8 +58,39 @@ const CoordinatesInput: React.FC<CoordinatesInputProps> = ({ value, onChange, ye
     setCoordinates({ ...coordinates, lat: position[0].toString(), lng: position[1].toString() });
   };
 
+  const handleLatChange = (lat: string) => {
+    const latNum = parseFloat(lat);
+    if (lat && isNaN(latNum)) {
+      setFormErrors({ ...formErrors, lat: "Широта має бути числом" });
+    } else {
+      delete formErrors.lat;
+      setFormErrors(formErrors);
+      setCoordinates({ ...coordinates, lat });
+    }
+  };
+
+  const handleLngChange = (lng: string) => {
+    const lngNum = parseFloat(lng);
+    if (lng && isNaN(lngNum)) {
+      setFormErrors({ ...formErrors, lng: "Довгота має бути числом" });
+    } else {
+      delete formErrors.lng;
+      setFormErrors(formErrors);
+      setCoordinates({ ...coordinates, lng });
+    }
+  };
+
   const handleRadiusChange = (radius: number) => {
     setCoordinates({ ...coordinates, radius_m: radius });
+  };
+
+  const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    const raw = e.clipboardData.getData("text/plain");
+    const parsed = parseMapLinkUrl(raw);
+    if (parsed) {
+      e.preventDefault();
+      setCoordinates((prev) => ({ ...prev, lat: parsed.lat.toString(), lng: parsed.lng.toString() }));
+    }
   };
 
   const latLng: [number, number] = [+(coordinates.lat || UKRAINE_CENTER[0]), +(coordinates.lng || UKRAINE_CENTER[1])];
@@ -74,7 +107,6 @@ const CoordinatesInput: React.FC<CoordinatesInputProps> = ({ value, onChange, ye
             className="rounded-lg text-danger"
             position={latLng}
             center={latLng}
-            onPositionChange={() => {}}
             year={+(year || 0) || undefined}
             radius={value.radius_m || 0}
             hideLayers={{ searchInput: true }}
@@ -101,23 +133,33 @@ const CoordinatesInput: React.FC<CoordinatesInputProps> = ({ value, onChange, ye
           <fieldset aria-label="Ручне введення координат" className="flex gap-2">
             <Input
               isDisabled={isLoading}
+              isInvalid={!!formErrors.lat}
+              errorMessage={formErrors.lat}
               label="Широта (lat)"
               isClearable
               value={coordinates.lat}
-              onValueChange={(lat) => setCoordinates({ ...coordinates, lat })}
+              onValueChange={handleLatChange}
               onClear={() => setCoordinates({ ...coordinates, lat: undefined })}
+              onPaste={handlePaste}
+              pattern="^-?\d+(\.\d+)?$"
             />
             <Input
               isDisabled={isLoading}
+              isInvalid={!!formErrors.lng}
+              errorMessage={formErrors.lng}
               label="Довгота (lng)"
               isClearable
               value={coordinates.lng}
-              onValueChange={(lng) => setCoordinates({ ...coordinates, lng })}
+              onValueChange={handleLngChange}
               onClear={() => setCoordinates({ ...coordinates, lng: undefined })}
+              onPaste={handlePaste}
+              pattern="^-?\d+(\.\d+)?$"
             />
             <NumberInput
               className="basis-1/4 shrink-0"
               isDisabled={isLoading}
+              isInvalid={!!formErrors.radius_m}
+              errorMessage={formErrors.radius_m}
               label="Радіус"
               isClearable
               formatOptions={{
@@ -127,8 +169,9 @@ const CoordinatesInput: React.FC<CoordinatesInputProps> = ({ value, onChange, ye
               }}
               maxValue={10000}
               value={coordinates.radius_m || 0}
-              onValueChange={(r) => setCoordinates({ ...coordinates, radius_m: r })}
+              onValueChange={handleRadiusChange}
               onClear={() => setCoordinates({ ...coordinates, radius_m: undefined })}
+              onPaste={handlePaste}
             />
           </fieldset>
         </AccordionItem>
