@@ -96,8 +96,6 @@ export async function POST(request: Request) {
       LIMIT 50
     `;
 
-    console.log(query.text, query.values);
-
     const rawResults = await prisma.$queryRaw<
       {
         id: number;
