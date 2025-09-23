@@ -104,12 +104,12 @@ const CoordinatesInput: React.FC<CoordinatesInputProps> = ({ value, onChange, ye
         {!isOpen && (
           <GeoDuckMap
             key="static-geoduck-map"
-            className="rounded-lg text-danger"
+            className="rounded-lg text-primary"
             position={latLng}
             center={latLng}
             year={+(year || 0) || undefined}
             radius={value.radius_m || 0}
-            hideLayers={{ searchInput: true }}
+            hideLayers={{ searchInput: true, historicalLayers: true }}
             zoom={12}
           />
         )}
@@ -181,7 +181,7 @@ const CoordinatesInput: React.FC<CoordinatesInputProps> = ({ value, onChange, ye
         <ModalContent className="h-[80vh] md:h-[90vh]">
           <GeoDuckMap
             key="geoduck-map"
-            className="rounded-lg text-danger"
+            className="rounded-lg text-primary"
             position={latLng}
             onPositionChange={handleGeoChange}
             year={+(year || 0) || undefined}
