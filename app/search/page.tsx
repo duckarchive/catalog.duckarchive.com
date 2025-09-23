@@ -6,6 +6,7 @@ import { NextPage } from "next";
 import Search from "@/components/search";
 import { getArchives } from "@/data/archives";
 import getTags from "@/data/tags";
+import { Suspense } from "react";
 
 const SearchPage: NextPage = async () => {
   const archives = await getArchives();
@@ -18,7 +19,9 @@ const SearchPage: NextPage = async () => {
   return (
     <div className="flex flex-col">
       <h1 className="text-lg font-bold">Пошук:</h1>
-      <Search archives={archives} tags={tags} />
+      <Suspense fallback={<span>...</span>}>
+        <Search archives={archives} tags={tags} />
+      </Suspense>
     </div>
   );
 };

@@ -35,6 +35,7 @@ const Search: React.FC<SearchProps> = ({ archives, tags }) => {
 
   useEffect(() => {
     setQueryParams(searchValues);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchValues]);
 
   const handleInputChange = (key: keyof SearchRequest) => (e: React.ChangeEvent<HTMLInputElement>) => {

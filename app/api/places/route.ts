@@ -33,7 +33,6 @@ export async function GET(request: Request) {
 
     return NextResponse.json(placeNames);
   } catch (error) {
-    // eslint-disable-next-line no-console
     console.error("Places API Error:", error);
 
     return NextResponse.json(
